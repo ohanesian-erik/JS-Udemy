@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 window.addEventListener('DOMContentLoaded', function() {
 
@@ -95,5 +95,8 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 
     setClock('.timer', deadline);
+
+    // Modal
+    
 
 });
