@@ -97,33 +97,49 @@ window.addEventListener('DOMContentLoaded', function () {
 
 	const modal = document.querySelector('.modal'),
 		modalBtn = document.querySelectorAll('[data-modal]'),
-		modalClose = document.querySelector('[data-modal-close]');
+		modalClose = document.querySelector('[data-modal-close]'),
+		modalTimerId = setTimeout(showModal, 10000);
 
-	modalBtn.forEach(btn => {
-		btn.addEventListener('click', () => {
-            modal.classList.add('show');
-            modal.classList.remove('hide');
-            document.body.style.overflow = 'hidden';
-		});
+	function showModal() {
+		modal.classList.add('show');
+		modal.classList.remove('hide');
+		document.body.style.overflow = 'hidden';
+
+		clearInterval(modalTimerId);
+	}
+
+	modalBtn.forEach((btn) => {
+		btn.addEventListener('click', showModal);
 	});
 
-    function closeModal() {
-        modal.classList.add('hide');
-        modal.classList.remove('show');
-        document.body.style.overflow = '';
-    }
+	function closeModal() {
+		modal.classList.add('hide');
+		modal.classList.remove('show');
+		document.body.style.overflow = '';
+	}
 
-    modalClose.addEventListener('click', closeModal);
+	modalClose.addEventListener('click', closeModal);
 
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
+	modal.addEventListener('click', (e) => {
+		if (e.target === modal) {
+			closeModal();
+		}
+	});
 
-    document.addEventListener('keydown', (e) => {
-        if (e.code === "Escape" && modal.classList.contains('show')) {
-            closeModal();
-        }
-    });
+	document.addEventListener('keydown', (e) => {
+		if (e.code === 'Escape' && modal.classList.contains('show')) {
+			closeModal();
+		}
+	});
+
+	function showModalByScroll() {
+		if (
+			window.pageYOffset + document.documentElement.clientHeight >=
+			document.documentElement.scrollHeight
+		) {
+			showModal();
+			window.removeEventListener('scroll', showModalByScroll);
+		}
+	}
+	window.addEventListener('scroll', showModalByScroll);
 });
